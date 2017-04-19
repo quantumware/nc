@@ -23,9 +23,8 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.1.7"
 )
 
-unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil
+//unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil
 
-//mainClass in (Compile, run) := Some("labs.jy4.MongoDB")
 mainClass in (Compile, run) := Some("labs.nc.UrlPinger")
 //mainClass in assembly := Some("labs.nc.Main")
 //test in assembly := {}

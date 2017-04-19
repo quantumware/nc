@@ -18,7 +18,9 @@ libraryDependencies ++= Seq(
   "org.codehaus.jackson" % "jackson-mapper-asl" % "1.9.13",
   "com.fasterxml.jackson.core" % "jackson-databind" % "2.7.7",
   "com.google.code.gson" % "gson" % "2.8.0",
-  "org.apache.commons" % "commons-lang3" % "3.0"
+  "org.apache.commons" % "commons-lang3" % "3.0",
+  "org.slf4j" % "slf4j-api" % "1.7.10",
+  "ch.qos.logback" % "logback-classic" % "1.1.7"
 )
 
 unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil

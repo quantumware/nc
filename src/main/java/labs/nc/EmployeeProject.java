@@ -26,6 +26,12 @@ public class EmployeeProject {
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name="PROJECT_ID", referencedColumnName="ID")
 	private Project project;
+	
+	public EmployeeProject() {}
+	public EmployeeProject(long employeeId, long projectId) {
+		this.employeeId = employeeId;
+		this.projectId = projectId;
+	}
 
 	public long getEmployeeId() {
 		return employeeId;
@@ -33,7 +39,7 @@ public class EmployeeProject {
 	public void setEmployeeId(long employeeId) {
 		this.employeeId = employeeId;
 	}
-
+	
 	public long getProjectId() {
 		return projectId;
 	}

@@ -74,6 +74,59 @@ public class NcDaoJpa implements NcDao {
 		}
 		return supervisorId;
 	}
+	
+	public long getCommonManager(long superviseeId1, long superviseeId2) {
+//		LOG.info(superviseeId1 + ", " + superviseeId2);
+		Query q1 = em.createNativeQuery("WITH Nodes(SUPERVISEE_ID, SUPERVISOR_ID, Depth) AS("
+				+ "	SELECT SUPERVISEE_ID, SUPERVISOR_ID, 0 AS DEPTH "
+				+ "	FROM SUPERVISION WHERE SUPERVISEE_ID = " + superviseeId1
+				+ "	UNION ALL "
+				+ "	SELECT pc.SUPERVISEE_ID, pc.SUPERVISOR_ID, n.Depth - 1 "
+				+ "	FROM SUPERVISION pc "
+				+ "	JOIN Nodes n ON pc.SUPERVISEE_ID = n.SUPERVISOR_ID "
+				+ ")"
+				+ "SELECT n.SUPERVISOR_ID, COUNT(n.SUPERVISOR_ID) FROM Nodes n "
+				+ "GROUP BY n.SUPERVISOR_ID");
+//		q1.setParameter(1, superviseeId1);
+		List<Object[]> superviseeIds1 = q1.getResultList();
+//		LOG.info("superviseeIds1:" + superviseeIds1);
+		
+		Query q2 = em.createNativeQuery("WITH Nodes(SUPERVISEE_ID, SUPERVISOR_ID, Depth) AS("
+				+ "	SELECT SUPERVISEE_ID, SUPERVISOR_ID, 0 AS DEPTH "
+				+ "	FROM SUPERVISION WHERE SUPERVISEE_ID = " + superviseeId2
+				+ "	UNION ALL "
+				+ "	SELECT pc.SUPERVISEE_ID, pc.SUPERVISOR_ID, n.Depth - 1 "
+				+ "	FROM SUPERVISION pc "
+				+ "	JOIN Nodes n ON pc.SUPERVISEE_ID = n.SUPERVISOR_ID "
+				+ ")"
+				+ "SELECT n.SUPERVISOR_ID, COUNT(n.SUPERVISOR_ID) FROM Nodes n "
+				+ "GROUP BY n.SUPERVISOR_ID");
+//		q2.setParameter(1, superviseeId2);
+		List<Object[]> superviseeIds2 = q2.getResultList();
+//		LOG.info("superviseeIds2:" + superviseeIds2);
+		
+		long supervisorId = 0;
+		for (Object[] obj : superviseeIds1) {
+//			LOG.info(obj[0] + ":" + obj[1]);
+			for (Object[] obj2 : superviseeIds2) {
+//				LOG.info("obj2->" + obj2[0] + ":" + obj2[1]);
+				if ((obj[0]).equals(obj2[0])) {
+//					LOG.info(obj[0] + ", " + obj2[0]);
+					supervisorId = new Long(obj[0].toString());
+//					break;
+					return supervisorId;
+				}
+			}
+//			if (superviseeIds2.contains(obj)) {
+//				supervisorId = (Long) obj[0];
+//				break;
+//			}
+		}
+//		superviseeIds1.retainAll(superviseeIds2);
+//		LOG.info("" + superviseeIds1);
+//		LOG.info("supervisorId:" + supervisorId);
+		return supervisorId;
+	}
 
 	@Override
 	public long getClosestManager(long projectId) {

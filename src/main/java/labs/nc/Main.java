@@ -49,15 +49,18 @@ public class Main {
 		
 		long employeeId = ncDao.findFirstEmployeeId(James.getName());
 		List<String> teammates = ncDao.findTeammates(employeeId);
-		System.out.println(James.getName() + " is teammates of " + teammates);
+		String teammatesStr = teammates.toString();
+		System.out.println(James.getName() + " is teammates of " + teammatesStr.substring(1, teammatesStr.length() - 1));
 		
-		long superviseeId1 = ncDao.findFirstEmployeeId(John.getName());
-		long superviseeId2 = ncDao.findFirstEmployeeId(Jack.getName());
-		long supervisorId = ncDao.getFirstCommonManager(superviseeId1, superviseeId2);
-		String supervisorName = ncDao.getEmployeeName(supervisorId);
-		System.out.println("John and Jack's common manager is " + supervisorName);
-		//TODO: graph
-		System.out.println("John and Sam's common manager is " + ncDao.getEmployeeName(ncDao.getFirstCommonManager(ncDao.findFirstEmployeeId(John.getName()), ncDao.findFirstEmployeeId(Sam.getName()))));
+//		long superviseeId1 = ncDao.findFirstEmployeeId(John.getName());
+//		long superviseeId2 = ncDao.findFirstEmployeeId(Jack.getName());
+//		long supervisorId = ncDao.getFirstCommonManager(superviseeId1, superviseeId2);
+//		String supervisorName = ncDao.getEmployeeName(supervisorId);
+//		System.out.println("John and Jack's common manager is " + supervisorName);
+		System.out.println("John and Jack's common manager is " + ncDao.getEmployeeName(ncDao.getCommonManager(
+				ncDao.findFirstEmployeeId(John.getName()), ncDao.findFirstEmployeeId(Jack.getName()))));
+		System.out.println("John and Sam's common manager is " + ncDao.getEmployeeName(ncDao.getCommonManager(
+				ncDao.findFirstEmployeeId(John.getName()), ncDao.findFirstEmployeeId(Sam.getName()))));
 		
 		long managerId = ncDao.getClosestManager(proA.getId());
 		String managerName = ncDao.getEmployeeName(managerId);

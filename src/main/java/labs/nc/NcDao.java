@@ -5,6 +5,7 @@ import java.util.List;
 public interface NcDao {
 	
 	public List<String> findTeammates(long employeeId);
+	public long getCommonManager(long superviseeId1, long superviseeId2);
 	public long getFirstCommonManager(long superviseeId1, long superviseeId2);
 	public long getClosestManager(long projectId);
 	

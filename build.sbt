@@ -4,14 +4,14 @@
 
 name := "nc"
 
-version := "0.0.1"
+version := "0.0.2"
 
 scalaVersion := "2.11.8"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 libraryDependencies ++= Seq(
-  "org.xerial" % "sqlite-jdbc" % "3.7.2",
+  //"org.xerial" % "sqlite-jdbc" % "3.7.2",
   "org.mongodb" % "mongo-java-driver" % "3.2.1",
   "com.h2database" % "h2" % "1.4.193",
   "org.eclipse.persistence" % "eclipselink" % "2.5.0",
@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
   "com.google.code.gson" % "gson" % "2.8.0",
   "org.apache.commons" % "commons-lang3" % "3.0",
   "org.slf4j" % "slf4j-api" % "1.7.10",
-  "ch.qos.logback" % "logback-classic" % "1.1.7"
+  "ch.qos.logback" % "logback-classic" % "1.1.7",
+  "junit" % "junit" % "4.8.2"
 )
 
 //unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil

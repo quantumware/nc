@@ -1,11 +1,20 @@
 package labs.nc;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
-public class Main {
+import org.junit.Before;
+import org.junit.Test;
 
-	public static void main(String[] args) {
-		NcDao ncDao = new NcDaoJpa();
+public class NcDaoJpaTest {
+	
+	private NcDao ncDao;
+	
+	@Before
+	public void loadData() {
+		ncDao = new NcDaoJpa();
+		
 		Employee John = new Employee("John");
 		ncDao.addObject(John);
 		Employee Lisa = new Employee("Lisa");
@@ -46,19 +55,30 @@ public class Main {
 		ncDao.addObject(new EmployeeProject(Lucy.getId(), proB.getId()));
 		ncDao.addObject(new EmployeeProject(Lucy.getId(), proC.getId()));
 		ncDao.addObject(new EmployeeProject(Sam.getId(), proB.getId()));
-		
-		long employeeId = ncDao.getEmployeeByName(James.getName()).getId();
+	}
+
+	@Test
+	public void findTeammates() {
+		String james = "James";
+		long employeeId = ncDao.getEmployeeByName(james).getId();
 		List<String> teammates = ncDao.findTeammates(employeeId);
-		String teammatesStr = teammates.toString();
-		System.out.println(James.getName() + " is teammates of " + teammatesStr.substring(1, teammatesStr.length() - 1));
+		assertTrue(teammates.contains("John"));
+		assertTrue(teammates.contains("Jack"));
+		assertTrue(teammates.contains("Lucy"));
+	}
+	
+	@Test
+	public void findFirstEmployeeId() {
+		assertEquals("Lisa", ncDao.getCommonManager(ncDao.getEmployeeByName("John").getId(), ncDao.getEmployeeByName("Jack").getId()).getName());
+		assertEquals("Simon", ncDao.getCommonManager(ncDao.getEmployeeByName("John").getId(), ncDao.getEmployeeByName("Sam").getId()).getName());
+	}
+	
+	@Test
+	public void getClosestManager() {
+		long projectId = ncDao.getProjectByName("Project A").getId();
+		String managerName = ncDao.getClosestManager(projectId).getName();
+		assertEquals("Lisa", managerName);
 		
-		System.out.println("John and Jack's common manager is " + ncDao.getCommonManager(
-				ncDao.getEmployeeByName(John.getName()).getId(), ncDao.getEmployeeByName(Jack.getName()).getId()).getName());
-		System.out.println("John and Sam's common manager is " + ncDao.getCommonManager(
-				ncDao.getEmployeeByName(John.getName()).getId(), ncDao.getEmployeeByName(Sam.getName()).getId()).getName());
-		
-		String managerName = ncDao.getClosestManager(proA.getId()).getName();
-		System.out.println(proA.getName() + " is likely the responsibility of " + managerName + " as the majority of team members work for " + managerName);
 	}
 
 }
